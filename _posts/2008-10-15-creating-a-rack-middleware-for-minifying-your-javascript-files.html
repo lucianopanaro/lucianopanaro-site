@@ -1,0 +1,97 @@
+---
+layout: post
+title: Creating a Rack Middleware for Minifying Your Javascript files
+tags:
+- jsmin
+- middleware
+- rack
+- ruby
+date: 2008-10-15 22-40-46
+---
+
+<p>If you are in the Ruby world you have probably heard of <a href="http://rack.rubyforge.org/" target="_blank">Rack</a>. If you haven't, and you are a Pythonista, then you only need to know that Rack is a sort of "<a href="http://wsgi.org/wsgi/" target="_blank">WSGI</a> for Ruby". And in case you don't know what Rack or WSGI are, then here's a brief description:</p>
+
+<p><blockquote>"Rack provides a minimal, modular and adaptable interface for developing web applications in Ruby. By wrapping HTTP requests and responses in the simplest way possible, it unifies and distills the API for web servers, web frameworks, and software in between (the so-called middleware) into a single method call."</blockquote></p>
+
+<p>So you can think of Rack as a "<a href="http://macournoyer.wordpress.com/2007/12/14/rack-the-framework-framework/" target="_blank">frameworks framework</a>". <a href="http://brainspl.at/articles/2008/02/16/so-merb-core-is-built-on-rack-you-say-why-should-i-care" target="_blank">Merb</a> and other <a href="http://ramaze.net" target="_blank">ruby</a> <a href="http://railswaves.com/" target="_blank">frameworks</a> already support Rack, which means that they can share the middleware described above.</p>
+
+<h2>Creating a Rack Middleware</h2>
+
+<p>So let's say you want your application (built on Rails, Merb, Ramaze or even Rack) to intercept any request for javascript files so that you can first minify them. Below is the sample code for achieving this with a Rack Middleware:</p>
+
+<p><em>(You can checkout this code, its spec and example from <a href="http://github.com/lucianopanaro/rack-javascript-minifier" target="_blank">http://github.com/lucianopanaro/rack-javascript-minifier</a>. The javascript minifier is a port from <a href="http://www.crockford.com/javascript/jsmin.html" target="_blank">Douglas Crockford's library</a> <a href="http://github.com/rgrove/jsmin/" target="_blank">done by Ryan Grove</a>.)</em></p>
+
+{% highlight ruby linenos %}
+  class JavascriptMinifier
+    F = ::File
+
+    def initialize(app, path)
+      @app = app
+      @root = F.expand_path(path)
+      raise "Provided path #{@root} does not exist" unless F.directory?(@root)
+    end
+
+    def call(env)
+      path = F.join(@root, Utils.unescape(env["PATH_INFO"]))
+
+      unless path.match(/.*\/(\w+\.js)$/) and F.file?(path)
+        return @app.call(env)
+      end
+
+      if env["PATH_INFO"].include?("..") or !F.readable?(path)
+        body = "Forbidden\n"
+        size = body.respond_to?(:bytesize) ? body.bytesize : body.size
+        return [
+          403,
+          {"Content-Type" => "text/plain","Content-Length" => size.to_s},
+          [body]
+        ]
+      end
+
+      last_modified = F.mtime(path)
+      min_path = F.join(@root, "m_#{last_modified.to_i}_#{F.basename(path)}")
+
+      unless F.file?(min_path)
+        F.open(path, "r") { |file|
+          F.open(min_path, "w") { |f| f.puts JSMin.minify(file) }
+        }
+      end
+
+      [200, {
+             "Last-Modified"  => F.mtime(min_path).httpdate,
+             "Content-Type"   => "text/javascript",
+             "Content-Length" => F.size(min_path).to_s
+            }, F.new(min_path, "r")]
+    end
+  end
+{% endhighlight %}
+
+<p>Rack Middleware's interface is dead simple. As <a href="http://macournoyer.wordpress.com/2008/02/09/the-flexible-thin-anorexic-gymnast-that-democratized-deployment/">Marc-André Cournoyer points out</a>: <em>"It must have a call method and receive a Rack app as the first argument of new"</em>.</p>
+
+<p>So here, when we initialize the JavascriptMinifier, we pass the root path where the javascript files are placed. Every time it gets called, the middleware first checks if the request is for a javascript file. If it's not, it passes it to the application. If the request is for a javascript in a parent directory, then we return a forbidden (403) page. Finally, if the request passes these filters, the middleware creates a minified version of the javascript file and returns it.</p>
+
+<h2>Running your application with middleware</h2>
+
+<p>This is also really simple using <a href="http://rack.rubyforge.org/doc/classes/Rack/Builder.html" target="_blank">Rack::Builder</a>:</p>
+
+<p><blockquote>"Rack::Builder implements a small DSL to iteratively construct Rack applications. <a href="http://rack.rubyforge.org/doc/classes/Rack/Builder.html#M000112" target="_blank">use</a> adds a middleware to the stack, <a href="http://rack.rubyforge.org/doc/classes/Rack/Builder.html#M000113">run</a> dispatches to an application." </blockquote></p>
+
+<p>So here is an example of a rackup file that you can use to startup your application with some middleware:</p>
+
+{% highlight ruby linenos %}
+   use Rack::CommonLogger
+   use Rack::ShowExceptions
+   use JavascriptMinifier, "./"
+   run Rack::Lobster.new
+{% endhighlight %}
+
+<h2>Testing and Spec'ing helpers</h2>
+
+<p>Rack provides two helpers that will be of great use for testing your application: <a href="http://rack.rubyforge.org/doc/classes/Rack/MockRequest.html" target="_blank">Rack::MockRequest</a> and <a href="http://rack.rubyforge.org/doc/classes/Rack/MockResponse.html" target="_blank">Rack::MockResponse</a>, so you have no excuses to test your Rack Middleware and do some TDD/BDD!</p>
+
+<h2>Where to go from here</h2>
+
+<p>To learn how to develop your own Rack Middleware, your best resource will be Rack sources. You will learn a lot of Rack (and Ruby in general) by reading the code and specs they provide: <a href="http://rack.rubyforge.org/doc/classes/Rack/URLMap.html" target="_blank">URLMap</a>, <a href="http://rack.rubyforge.org/doc/classes/Rack/CommonLogger.html">CommonLogger</a>, <a href="http://rack.rubyforge.org/doc/classes/Rack/File.html">File</a>. There also is a <a href="http://groups.google.com/group/rack-devel">group</a> where you can ask your questions too.</p>
+
+<p>So enjoy your trip with Rack Middleware and feel free to comment your thoughts and questions!</p>
+

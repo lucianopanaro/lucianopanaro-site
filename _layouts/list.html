@@ -1,0 +1,10 @@
+---
+layout: global
+---
+{% for post in page.posts %}
+ {% include post.html %}
+
+ {% unless forloop.last %}
+   <hr class="separator" />
+ {% endunless %}
+{% endfor %}

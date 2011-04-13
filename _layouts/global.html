@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>{{ page.title }} - Luciano German Panaro's blog</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <link rel="alternate" type="application/rss+xml" title="A List Apart main RSS feed" href="/feeds.html" />
+  <link rel="stylesheet" type="text/css" href="/css/reset-min.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="/css/manni.css" media="all" />
+</head>
+<body class="" onload="">
+  <div id="header">
+    <div class="onecol">
+      <p>luciano germ&aacute;n panaro's blog. <a href="#footer">learn more</a>.</p>
+    </div>
+  </div>
+
+  <div id="content">
+    <div class="onecol">
+      {{ content }}
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="onecol">
+      <div class="content">
+        <h2>About</h2>
+        <p>
+          24 year old web development enthusiast.
+        </p>
+      </div>
+    </div>
+    <div class="onecol">
+      <div class="content" id="footer_archives">
+        <h2>Archives</h2>
+        {{ site | archive_list }}
+    </div>
+    <div class="onecol">
+      <div class="content" id="footer_tags">
+        <h2>Tags</h2>
+        {{ site | tag_cloud }}
+      </div>
+    </div>
+    <div class="onecol">
+      <div class="content" id="footer_social">
+        <h2>Social</h2>
+        <ul>
+          <li class="twitter"><a href="http://twitter.com/lucianopanaro">Twitter</a></li>
+          <li class="github"><a href="https://github.com/lucianopanaro">GitHub</a></li>
+          <li class="linkedin"><a href="http://www.linkedin.com/pub/luciano-panaro/4/a03/229">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

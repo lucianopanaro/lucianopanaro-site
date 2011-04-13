@@ -1,0 +1,11 @@
+---
+layout: global
+title: Home
+---
+{% for post in site.posts limit:10 %}
+ {% include post.html %}
+
+ {% unless forloop.last %}
+   <hr class="separator" />
+ {% endunless %}
+{% endfor %}

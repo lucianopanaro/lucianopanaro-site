@@ -1,0 +1,97 @@
+---
+layout: post
+title: jQuery Fx Queues plugin
+tags: []
+---
+<div class="storycontent">
+
+<p style="border:1px solid #CECC4D;font-weight:bold;padding:5px;">
+  <a href="http://lucianopanaro.com/jquery-fxqueues-plugin-20/">There is a new version of this plugin for jQuery 1.2.x</a>
+</p>
+
+<h2>Introduction</h2>
+The <strong>jQuery Fx Queues</strong> plugin is a global queueing (duh!) system that
+allows to enqueue effects of different elements, but also keeps jQuery’s default
+queueing option.
+
+A <strong>wait</strong> argument was also added to be able to
+specify the time to wait before starting the animation.
+
+<hr />
+<h2>Download</h2>
+<ul>
+	<li><a href="http://lucianopanaro.com/fxqueues/jquery.fxqueues-1.0.pack.js">Packed (2.92KB)</a></li>
+	<li><a href="http://lucianopanaro.com/fxqueues/jquery.fxqueues-1.0.js">Source (10.3KB)</a></li>
+</ul>
+<hr />
+<h2>Queues</h2>
+A queue is an array that may contain <strong>animations to perform</strong> and/or
+<strong>scopes</strong>.
+
+You just have to pass its name (with the animate’s “queue” argument) to add an animation
+to a queue. If the queue doesn’t exist, then it creates it automatically.
+In case a name is not passed, then a queue for the element is created.
+
+<hr />
+<h2>Scopes</h2>
+What happens if you needed to enqueue not a single effect, but a group of effects
+to be played altogether? This is where <strong>scopes</strong> come to save the day.
+
+A scope is an object that can be contained in a queue. It is an array that contains
+<strong>only</strong> animations to perform. When a scope is dequeued, it automatically
+plays all the animations it contains.
+
+You just have to pass its name (with the animate’s “scope” argument) to add an animation
+to a queue’s scope. If the scope doesn’t exist, then it creates it automatically.
+
+<hr />
+<h2>New arguments added to <a href="http://docs.jquery.com/Effects/animate"><em>animate</em></a>:</h2>
+<ul>
+	<li><strong>queue</strong>: <span class="type">(string)</span> Name of the queue. If it doesn’t exist, it creates the new queue.</li>
+	<li><strong>scope</strong>: <span class="type">(string)</span> Name of the scope.</li>
+	<li><strong>queuePosition</strong>: <span class="type">(”front”|”end”)</span> Queue position where animation (or scope,
+if passed) is queued.</li>
+	<li><strong>wait</strong>: <span class="type">(int)</span> Milliseconds to wait before starting the animation.</li>
+</ul>
+<hr />
+<h2>Usage:</h2>
+animate(properties, speed, easing, callback, queue, scope, queuePosition, wait)
+
+<p class="code">$(”#myId”).animate(
+{<strong>marginLeft:</strong> “10px”},
+{<strong>speed:</strong> 500,
+<strong>queue:</strong> “first”
+});</p>
+Since these arguments are available in the new
+<strong><em>animate</em></strong> implementation,
+they can be used in the other effects, like:
+
+<p class="code">$(”#myId”).fadeIn({
+<strong>speed:</strong> 500,
+<strong>queue:</strong> “first”,
+<strong>scope:</strong> “global”,
+<strong>wait:</strong> 500
+});</p>
+
+<hr />
+<h2>Useful functions</h2>
+Three functions were created to manage the queues, which can be found in the <strong>jQuery.fxQueues</strong> object.
+<ul>
+	<li><strong>jQuery.fxQueues.clear( queueName )</strong></li>
+	<li><strong>jQuery.fxQueues.start( queueName )</strong></li>
+	<li><strong>jQuery.fxQueues.stop( queueName )</strong></li>
+</ul>
+<hr />
+<h3><a href="http://lucianopanaro.com/fxqueues/fxqueues.html" target="_blank">Examples</a></h3>
+<hr />
+<h3>Changelog</h3>
+<ul>
+	<li><strong>11-21-2007</strong>:
+<ul>
+	<li>Renamed functions (start, stop and clear)</li>
+	<li>Fixed stop method when stopping an animation queued with a wait time.</li>
+</ul>
+</li>
+	<li><strong>11-19-2007</strong>: First release.</li>
+</ul>
+</div>

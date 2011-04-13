@@ -1,0 +1,29 @@
+---
+layout: post
+title: jQuery Object Cache Update
+tags:
+- caching
+- javascript
+- jquery
+- plugin
+date: 2009-01-11 17-14-56
+---
+
+<p>After discussing with <a title="Andrew Luetgers" href="http://thetechnicsblog.blogspot.com/" target="_blank">Andrew Luetgers</a> some improvements that could be done to the <a title="jQuery Object Cache" href="http://lucianopanaro.com/2008/11/20/new-jquery-plugin-object-cache/" target="_blank">Object Cache</a> plugin, I updated the plugin to a new version.</p>
+
+<p>The new improvement is that now you can store a selection automatically:</p>
+
+{% highlight javascript linenos %}
+// Will store in cache $("#sidebarNav") with #sidebarNav key
+$$("#sidebarNav");
+{% endhighlight %}
+
+<p>This will let you avoid doing <em>$("#menu").cache("menu")</em>, which is a bit redundant. Now by doing <em>$$("#menu")</em> you will be able to store it in the cache and retrieve it automatically. There is also a <strong>reload</strong> option that you can pass to that call in order to, well, reload the the cached object with that selection:</p>
+
+{% highlight javascript linenos %}
+// Will reload #sidebarNav with $("#sidebarNav")
+$$("#sidebarNav", true);
+{% endhighlight %}
+
+<p>You can grab the <a title="jQuery Object Cache Plugin" href="http://plugins.jquery.com/node/5633" target="_blank">new version of the Object Cache plugin here</a>.</p>
+

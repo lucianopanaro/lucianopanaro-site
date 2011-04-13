@@ -1,0 +1,19 @@
+---
+layout: post
+title: New jQuery queueing plugin
+tags:
+- fxqueues
+- javascript
+- jquery
+- plugin
+date: 2007-11-18 19-36-03
+---
+
+<p>I'm beginning this blog with a jquery plugin I had to develop a few weeks ago for a project I'm working on.</p>
+
+<p>Even though<strong> jQuery</strong> is a great javascript library, its latest version brings a queue control, it doesn't work for different elements. That is, if you had something like</p>
+
+<p>$("#myDiv").animate({fontSize: "30px"}).animate({marginLeft: "40px"})</p>
+
+<p>it would queue the animations. But what if you wanted to be able to queue different elements (just like <strong>Scriptaculous</strong> allows)? Well, that's the reason why I developed the <a title="jQuery Fx Queues" href="http://lucianopanaro.com/jqueryfxqueues/">jQuery Fx Queues plugin</a>. So go ahead and check it out, and feel free to send me your comments or any bugs you find.</p>
+

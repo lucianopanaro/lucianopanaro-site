@@ -1,0 +1,126 @@
+/* font faces */
+
+@font-face {
+    font-family: 'BebasRegular';
+    src: url('fonts/BEBAS___-webfont.eot');
+    src: url('fonts/BEBAS___-webfont.eot?#iefix') format('eot'),
+         url('fonts/BEBAS___-webfont.woff') format('woff'),
+         url('fonts/BEBAS___-webfont.ttf') format('truetype'),
+         url('fonts/BEBAS___-webfont.svg#webfontvdG2ln3d') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'CrimsonRoman';
+    src: url('fonts/Crimson-Roman-webfont.eot');
+    src: url('fonts/Crimson-Roman-webfont.eot?#iefix') format('eot'),
+         url('fonts/Crimson-Roman-webfont.woff') format('woff'),
+         url('fonts/Crimson-Roman-webfont.ttf') format('truetype'),
+         url('fonts/Crimson-Roman-webfont.svg#webfontPY06YkYz') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* global */
+
+body {
+  color: #555;
+  font-family: 'CrimsonRoman';
+  font-size: 18px;
+  line-height: 1.4em;
+}
+
+h1, h2, h3, h4, h5, h6, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  font-family: 'BebasRegular';
+  color: #CE534D;
+  text-shadow: 0 0 1px transparent;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 34px;
+}
+
+a {
+  color: #64B6B1;
+}
+
+.clearboth {
+  clear: both;
+}
+
+hr.separator {
+  border: 0;
+  border-bottom: 1px dotted #999;
+  margin: 20px 0;
+}
+
+/* columns */
+
+.onecol {
+  margin: auto;
+  width: 560px;
+}
+
+.thirdcol {
+  margin: auto;
+  width: 200px;
+  float: left;
+}
+
+/* header */
+
+#header p {
+  border-bottom: 1px solid #aaa;
+  color: #aaa;
+  text-align: right;
+}
+
+#header {
+  margin-bottom: 10px;
+}
+
+/* post */
+
+.post {
+}
+
+.post .metadata {
+  color: #aaa;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.post p {
+  margin: 10px 0;
+}
+
+.post h2, .post h3, .post h4, .post h5, .post h6 {
+  color: #333;
+  margin: 10px 0;
+}
+
+.post ul li {
+  list-style-type: square;
+  margin-left: 20px;
+}
+
+/* footer */
+
+#footer {
+  border-top: 1px dotted #aaa;
+  background: #DED4B9;
+}
+
+/* highlight */
+
+div.highlight {
+  background: #F0F3F3;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  font-size: 0.6em;
+  width: 560px;
+}
+

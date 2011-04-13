@@ -1,0 +1,144 @@
+---
+layout: post
+title: "Update: Creating a news carousel with jQuery, now with time based switching"
+tags:
+- carousel
+- jquery
+- tutorial
+date: 2009-01-11 16-48-23
+---
+
+<p>This is just a simple and quick update on the <a title="Creating a news carousel with jQuery" href="http://lucianopanaro.com/2008/10/05/creating-a-news-carousel-with-jquery" target="_blank">Creating a news carousel with jQuery</a> post.</p>
+
+<p>After reading <a href="http://lucianopanaro.com/2008/10/05/creating-a-news-carousel-with-jquery/comment-page-1/#comment-71" target="_blank">this comment</a>, and going through the code, I decided to implement the time-based switching functionality and also clean up the code a little bit (<a href="http://lucianopanaro.com/samples/carousel_with_time_based_switching.html" target="_blank">check it out here</a>).</p>
+
+<p>The additions made (along with some code cleaning) were:</p>
+
+<ul>
+  <li>Append a simple div that will shrink while the picture is shown and reinitialized when the picture is switched.</li>
+  <li>Add a <strong>setInterval</strong> call that will do the picture switching (and the new div's animation).</li>
+</ul>
+
+<p><span style="text-decoration:underline;"><strong>Update 01/12:</strong></span> I added some fixes to the code</p>
+
+<ul>
+  <li>Use the image's load event to calculate each individual width. When all images are loaded, then the carousel is initiated.</li>
+  <li>The <strong>animate_timer</strong> function now stops all animations on the timer div before reinitializing the animation</li>
+</ul>
+<span style="text-decoration:underline;"><strong>Update 01/27:</strong></span> Even more fixes :)
+<ul>
+  <li>Work with cases were images are already in cache and load event is fired before we attach to it.</li>
+  <li>Fixed the way the news animation was calculated.</li>
+  <li>Added 2 more news to help test it better.</li>
+</ul>
+
+<p>So here's the new javascript that will do this:</p>
+
+{% highlight javascript linenos %}
+$(function() {
+    var carousel   = $('#news_carousel');
+    var news       = carousel.find('ul.news');
+    var controls   = null; // Will hold the ul with the controls
+    var timer      = null; // Will hold the timer div
+    var wait       = 5000; // Milliseconds to wait for auto-switching
+    var widths     = [];   // Will hold the widths of each image
+    var items_size = news.find('li').length;
+    var initialized = false;
+
+    if (!items_size) { return; }
+
+    // Controls html to append
+    var controls_str = '<ul class="controls">';
+    for ( var i = 1; i <= items_size; i++) {
+       controls_str += '<li><a href="#">' + i + '</a></li>';
+    }
+    controls_str += '</ul>';
+
+    // Cache the controls list
+    controls = carousel.append(controls_str).find('ul.controls');
+
+    // Make the first button in controls active
+    controls.find('li:first a').addClass('active');
+
+    // Hook to the controls' click events
+    controls.find('li a').click(function(event) {
+      move_news( $(this) );
+      return false;
+    });
+
+    // Append the timer and cache it
+    timer = carousel.append('<div class="timer"></div>').find('div.timer');
+
+    // Store each item's width and calculate the total width
+    news.find('li img')
+        .each(function(i, e) {
+            widths[i] = $(e).width();
+            if ( all_images_loaded() ) { init_carousel(); }
+        })
+        .load(function(e) {
+            var i = news.find('li img').index(this);
+            widths[i] = $(this).width();
+            if ( all_images_loaded() ) { init_carousel(); }
+        });
+
+
+    function all_images_loaded() {
+      if (items_size == widths.length) && (jQuery.inArray(0, widths)  1 ) {
+        return false;
+      }
+
+      var current_active = controls.find('li a.active');
+
+      if (new_active == 'next') {
+        var next = current_active.parent().next().find('a');
+
+        if ( !next.length ) { next = controls.find('li:first a'); }
+
+        new_active = next;
+      }
+
+      var current_index = parseInt(current_active.text(), 10) - 1;
+      var new_index     = parseInt(new_active.text(), 10) - 1;
+      var move_to       = new_index - current_index;
+
+
+      if (!move_to) { return false; }
+
+      var direction = (move_to > 0)? '-=': '+=';
+
+      var move   = 0;
+      var bottom = Math.min(current_index, new_index);
+      var top    = Math.max(current_index, new_index);
+
+      while (bottom < top) {
+        move += widths[bottom];
+        bottom++;
+      }
+
+      news.animate({marginLeft: direction + move }, 500);
+      new_active.addClass('active');
+      current_active.removeClass('active');
+    }
+
+    function animate_timer() {
+      timer.stop().css({width: '100px'}).animate({width: '1px'}, wait);
+    }
+
+    // Initializer, called when all images are loaded
+    function init_carousel() {
+      if (initialized) { return false; }
+
+      // Set the news ul total width
+      var width = 0;
+      for( var i = 0; i < widths.length; i++) { width += widths[i]; }
+      news.width(width);
+
+      // Make the news change every X seconds
+      setInterval(function() { move_news('next'); animate_timer(); }, wait);
+      animate_timer();
+
+      initialized = true;
+    }
+});
+{% endhighlight %}
+

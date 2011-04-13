@@ -1,0 +1,155 @@
+---
+layout: post
+title: Creating a news carousel with jQuery
+tags:
+- carousel
+- jquery
+- tutorial
+date: 2008-10-05 19-54-30
+---
+
+<p>Last week I had to do a news carousel for a project I'm developing. It had been a while since I had the chance to do something interesting with jQuery, so I wanted to share the experience of how easily you can build similar widgets for your site.</p>
+
+<p>So first let's take a look at <a href="http://lucianopanaro.com/samples/carousel.html" target="_blank">what we want to build</a>.</p>
+
+<p>Now, I know that there are a few plugins out there for jQuery that probably can do this, but the point of this post is to show how simple it is to create something like this with a few lines of jQuery and CSS.</p>
+
+<p>Let's begin by defining how we will organize the content. Being a list of news, we can either use an ordered or an unordered list.</p>
+
+{% highlight html linenos %}
+<div id="news_carousel">
+  <ul class="news">
+    <li>
+      <img src="" alt="" />
+      <strong><a href="#">Title</a></strong>
+      <span>Description</span>
+    </li>
+  </ul>
+</div>
+{% endhighlight %}
+
+<p>Now that we have our content, we have to style it. The keys here are to:</p>
+
+<ul>
+  <li>Align the list elements one next to the other.</li>
+  <li>Make <em>#news_carousel</em> just show one list element at a time</li>
+  <li>Use relative and absolute positioning to show the titles and descriptions over each image</li>
+</ul>
+
+<p>Here's the CSS used in the sample with some comments:</p>
+
+{% highlight css linenos %}
+ #news_carousel {
+     width: 444px;
+     height: 333px;
+     margin: 0;
+     padding: 0;
+     overflow: hidden;  /* this will make only show 1 li */
+     position: relative;
+  }
+  #news_carousel ul.news {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  #news_carousel ul li {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    /* to do absolute positioning of the child paragraph */
+    float: left;
+    /* align one next to the other */
+  }
+  #news_carousel ul.news li p {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    margin: 5px;
+  }
+  #news_carousel ul.news li p strong {
+    display: block;
+    padding: 5px;
+    margin: 0;
+    font-size: 20px;
+    background: #444;
+  }
+  #news_carousel ul.news li p span {
+    padding: 2px 5px;
+    color: #000;
+    background: #fff;
+  }
+  #news_carousel ul.controls {
+    position: absolute;
+    top: 0px; right: 20px;
+    list-style-type: none;
+  }
+  #news_carousel ul.controls li a {
+    float: left;
+    font-size: 15px;
+    margin: 5px;
+    padding: 2px 7px;
+    background: #000;
+    text-decoration: none;
+    outline: none;
+  }
+  #news_carousel ul.controls li a.active {
+    border: 2px solid #ccc;
+  }
+{% endhighlight %}
+
+<p>The Javascript code is pretty self-explanatory:</p>
+
+{% highlight javascript linenos %}
+var news_carousel = function() {
+    var items_size = $('#news_carousel ul li').length;
+
+    if (items_size == 0) return;
+
+    // Calculate the total width and set that value to
+    //   the ul.news width
+    // Store each item width
+    var width = 0;
+    var widths = [];
+    $('#news_carousel ul.news li img').each(function(i, e) {
+      widths[i] = $(e).width();
+      width += widths[i];
+    });
+
+    $("#news_carousel ul.news").width(width);
+
+    // Append the controls
+    controls = '<ul class="controls"><li><a class="active" href="#">1</a>';
+    for ( var i = 2; i <= items_size; i++) {
+       controls += '</li><li><a href="#">' + i + '</a></li>';
+    }
+    controls += '</ul>';
+    $('#news_carousel').append(controls);
+
+    $('#news_carousel ul.controls li a').click(function(event) {
+      // if the ul is already moving, then do nothing
+      if ($("#news_carousel ul.news:animated").length > 0) return false;
+
+      var clicked_item = $(event.target);
+      var current_active = $("#news_carousel ul.controls li a.active");
+      var current_index = parseInt(current_active.text());
+      var new_index = parseInt(clicked_item.text());
+      var move = new_index - current_index; //how many items it should be moved
+
+      if (move != 0) {
+        direction = (move > 0)? "-=": "+=";
+        $('#news_carousel ul.news')
+          .animate({marginLeft: direction + widths[new_index-1] }, 300);
+        clicked_item.addClass("active");
+        current_active.removeClass("active");
+      }
+
+      return false;
+    });
+  }();
+{% endhighlight %}
+
+<p>And that's it! Around 100 lines of code and you have your own home-made news carousel. Hope you found it useful! :)</p>
+
+<p>(Pictures taken from: <a href="http://www.flickr.com/photos/christing/268490607/">http://www.flickr.com/photos/christing/268490607/</a> and <a href="http://www.flickr.com/photos/11717181@N02/1170861540/">http://www.flickr.com/photos/11717181@N02/1170861540/</a>.)</p>
+
