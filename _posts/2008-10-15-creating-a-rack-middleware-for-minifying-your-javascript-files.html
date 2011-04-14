@@ -21,7 +21,7 @@ date: 2008-10-15 22-40-46
 
 <p><em>(You can checkout this code, its spec and example from <a href="http://github.com/lucianopanaro/rack-javascript-minifier" target="_blank">http://github.com/lucianopanaro/rack-javascript-minifier</a>. The javascript minifier is a port from <a href="http://www.crockford.com/javascript/jsmin.html" target="_blank">Douglas Crockford's library</a> <a href="http://github.com/rgrove/jsmin/" target="_blank">done by Ryan Grove</a>.)</em></p>
 
-{% highlight ruby linenos %}
+{% highlight ruby %}
   class JavascriptMinifier
     F = ::File
 
@@ -78,7 +78,7 @@ date: 2008-10-15 22-40-46
 
 <p>So here is an example of a rackup file that you can use to startup your application with some middleware:</p>
 
-{% highlight ruby linenos %}
+{% highlight ruby %}
    use Rack::CommonLogger
    use Rack::ShowExceptions
    use JavascriptMinifier, "./"

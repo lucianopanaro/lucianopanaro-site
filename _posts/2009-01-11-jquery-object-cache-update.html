@@ -13,14 +13,14 @@ date: 2009-01-11 17-14-56
 
 <p>The new improvement is that now you can store a selection automatically:</p>
 
-{% highlight javascript linenos %}
+{% highlight javascript %}
 // Will store in cache $("#sidebarNav") with #sidebarNav key
 $$("#sidebarNav");
 {% endhighlight %}
 
 <p>This will let you avoid doing <em>$("#menu").cache("menu")</em>, which is a bit redundant. Now by doing <em>$$("#menu")</em> you will be able to store it in the cache and retrieve it automatically. There is also a <strong>reload</strong> option that you can pass to that call in order to, well, reload the the cached object with that selection:</p>
 
-{% highlight javascript linenos %}
+{% highlight javascript %}
 // Will reload #sidebarNav with $("#sidebarNav")
 $$("#sidebarNav", true);
 {% endhighlight %}
