@@ -1,8 +1,8 @@
 module Jekyll
 
   class Archives
-    def self.from_site(site)
-      archives = {}
+    def initialize(site)
+      @archives = {}
 
       posts = if site.is_a?(Hash)
         site['posts']
@@ -16,11 +16,30 @@ module Jekyll
           :month => post.date.month.to_s.rjust(2, '0')
         }
 
-        archives[date] ||= []
-        archives[date] << post
+        @archives[date] ||= []
+        @archives[date] << post
       end
 
-      archives
+    end
+
+    def each(&block)
+      self.sorted_keys.each { |k| block.call(k, @archives[k]) }
+    end
+
+    def sorted_keys
+      @archives.keys.sort do |a,b|
+        if a[:year] > b[:year]
+          -1
+        elsif a[:year] == b[:year]
+          if a[:month] > b[:month]
+            -1
+          else
+            1
+          end
+        else
+          1
+        end
+      end
     end
   end
 
@@ -28,7 +47,7 @@ module Jekyll
     safe true
 
     def generate(site)
-      archives = Archives.from_site(site)
+      archives = Archives.new(site)
 
       archives.each do |archive, posts|
         site.pages << ArchivePage.new(
@@ -62,18 +81,18 @@ module Jekyll
   end
 
   module Filters
-    def archive_link(archive, count=nil)
+    def archive_link(archive)
       y, m = archive[:year], archive[:month]
-      %Q{<a href="/#{y}/#{m}">#{m}-#{y}</a>}
+      %Q{<a href="/#{y}/#{m}">#{Date::MONTHNAMES[m.to_i]} #{y}</a>}
     end
 
     def archive_list(site)
-      archives = Archives.from_site(site)
+      archives = Archives.new(site)
 
       el =  %Q{<ul class="archive_list">}
 
       archives.each do |archive, posts|
-        el << %Q{<li>#{archive_link(archive, posts.size)}</li>\n}
+        el << %Q{<li>#{archive_link(archive)} (#{posts.size})</li>\n}
       end
 
       el << %Q{</ul>}
