@@ -134,3 +134,11 @@ div.highlight {
   width: 560px;
 }
 
+/* disqus */
+
+#disqus_thread {
+  border-top: 1px dotted #666;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  padding-top: 30px;
+}
