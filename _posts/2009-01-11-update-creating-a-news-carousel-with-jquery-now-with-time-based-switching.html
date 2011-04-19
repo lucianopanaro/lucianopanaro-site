@@ -34,7 +34,7 @@ date: 2009-01-11 16-48-23
 
 <p>So here's the new javascript that will do this:</p>
 
-{% highlight javascript %}
+<pre class='prettyprint'>
 $(function() {
     var carousel   = $('#news_carousel');
     var news       = carousel.find('ul.news');
@@ -48,11 +48,11 @@ $(function() {
     if (!items_size) { return; }
 
     // Controls html to append
-    var controls_str = '<ul class="controls">';
-    for ( var i = 1; i <= items_size; i++) {
-       controls_str += '<li><a href="#">' + i + '</a></li>';
+    var controls_str = '&lt;ul class="controls"&gt;';
+    for ( var i = 1; i &lt;= items_size; i++) {
+       controls_str += '&lt;li&gt;&lt;a href="#"&gt;' + i + '&lt;/a&gt;&lt;/li&gt;';
     }
-    controls_str += '</ul>';
+    controls_str += '&lt;/ul&gt;';
 
     // Cache the controls list
     controls = carousel.append(controls_str).find('ul.controls');
@@ -67,7 +67,7 @@ $(function() {
     });
 
     // Append the timer and cache it
-    timer = carousel.append('<div class="timer"></div>').find('div.timer');
+    timer = carousel.append('&lt;div class="timer"&gt;&lt;/div&gt;').find('div.timer');
 
     // Store each item's width and calculate the total width
     news.find('li img')
@@ -104,13 +104,13 @@ $(function() {
 
       if (!move_to) { return false; }
 
-      var direction = (move_to > 0)? '-=': '+=';
+      var direction = (move_to &gt; 0)? '-=': '+=';
 
       var move   = 0;
       var bottom = Math.min(current_index, new_index);
       var top    = Math.max(current_index, new_index);
 
-      while (bottom < top) {
+      while (bottom &lt; top) {
         move += widths[bottom];
         bottom++;
       }
@@ -130,7 +130,7 @@ $(function() {
 
       // Set the news ul total width
       var width = 0;
-      for( var i = 0; i < widths.length; i++) { width += widths[i]; }
+      for( var i = 0; i &lt; widths.length; i++) { width += widths[i]; }
       news.width(width);
 
       // Make the news change every X seconds
@@ -140,5 +140,5 @@ $(function() {
       initialized = true;
     }
 });
-{% endhighlight %}
+</pre>
 

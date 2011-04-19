@@ -11,11 +11,11 @@ date: 2008-11-20 18-54-56
 
 <p>Inspired by <a href="http://benjaminsterling.com" target="_blank">Benjamin Sterling</a>'s <a href="http://benjaminsterling.com/better-jquery-code-1/" target="_blank">"Better jQuery Code"</a> article I decided to develop a simple plugin to make his first point (<em>Caching</em>) easier... nothing fancy, just a few methods, but you will hopefully find it useful.</p>
 
-<p>Its objective is to let you store a jQuery object with a simple key in a global cache, so that you can access the same object easily, without having to write the same selection, filtering or traversing code (i.e: $("#main > p") or $("#main").children(".selected").eq(0)).</p>
+<p>Its objective is to let you store a jQuery object with a simple key in a global cache, so that you can access the same object easily, without having to write the same selection, filtering or traversing code (i.e: $("#main &lt; p") or $("#main").children(".selected").eq(0)).</p>
 
 <h2>Here is how it works:</h2>
 
-{% highlight javascript %}
+<pre class='prettyprint'>
 // Store in cache - Returns current object
 $("#mainNav").cache("main_navigation");
 
@@ -30,7 +30,7 @@ $$.clear();
 
 // Load jQueryCache with noConflict to avoid overriding window.$$
 $$.noConflict();
-{% endhighlight %}
+</pre>
 
 <p>There is a lot of room for improvement, which will be done depending on the feedback I get,  so feel free to contact me with any ideas or corrections you might come up with.</p>
 

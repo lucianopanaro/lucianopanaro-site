@@ -16,17 +16,17 @@ date: 2008-10-05 19-54-30
 
 <p>Let's begin by defining how we will organize the content. Being a list of news, we can either use an ordered or an unordered list.</p>
 
-{% highlight html %}
-<div id="news_carousel">
-  <ul class="news">
-    <li>
-      <img src="" alt="" />
-      <strong><a href="#">Title</a></strong>
-      <span>Description</span>
-    </li>
-  </ul>
-</div>
-{% endhighlight %}
+<pre class='prettyprint'>
+&lt;div id="news_carousel"&gt;
+  &lt;ul class="news"&gt;
+    &lt;li&gt;
+      &lt;img src="" alt="" /&gt;
+      &lt;strong&gt;&lt;a href="#"&gt;Title&lt;/a&gt;&lt;/strong&gt;
+      &lt;span&gt;Description&lt;/span&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
 
 <p>Now that we have our content, we have to style it. The keys here are to:</p>
 
@@ -38,7 +38,7 @@ date: 2008-10-05 19-54-30
 
 <p>Here's the CSS used in the sample with some comments:</p>
 
-{% highlight css %}
+<pre class='prettyprint'>
  #news_carousel {
      width: 444px;
      height: 333px;
@@ -96,11 +96,11 @@ date: 2008-10-05 19-54-30
   #news_carousel ul.controls li a.active {
     border: 2px solid #ccc;
   }
-{% endhighlight %}
+</pre>
 
 <p>The Javascript code is pretty self-explanatory:</p>
 
-{% highlight javascript %}
+<pre class='prettyprint'>
 var news_carousel = function() {
     var items_size = $('#news_carousel ul li').length;
 
@@ -119,16 +119,16 @@ var news_carousel = function() {
     $("#news_carousel ul.news").width(width);
 
     // Append the controls
-    controls = '<ul class="controls"><li><a class="active" href="#">1</a>';
-    for ( var i = 2; i <= items_size; i++) {
-       controls += '</li><li><a href="#">' + i + '</a></li>';
+    controls = '&lt;ul class="controls"&gt;&lt;li&gt;&lt;a class="active" href="#"&gt;1&lt;/a&gt;';
+    for ( var i = 2; i &lt;= items_size; i++) {
+       controls += '&lt;/li&gt;&lt;li&gt;&lt;a href="#"&gt;' + i + '&lt;/a&gt;&lt;/li&gt;';
     }
-    controls += '</ul>';
+    controls += '&lt;/ul&gt;';
     $('#news_carousel').append(controls);
 
     $('#news_carousel ul.controls li a').click(function(event) {
       // if the ul is already moving, then do nothing
-      if ($("#news_carousel ul.news:animated").length > 0) return false;
+      if ($("#news_carousel ul.news:animated").length &gt; 0) return false;
 
       var clicked_item = $(event.target);
       var current_active = $("#news_carousel ul.controls li a.active");
@@ -137,7 +137,7 @@ var news_carousel = function() {
       var move = new_index - current_index; //how many items it should be moved
 
       if (move != 0) {
-        direction = (move > 0)? "-=": "+=";
+        direction = (move &gt; 0)? "-=": "+=";
         $('#news_carousel ul.news')
           .animate({marginLeft: direction + widths[new_index-1] }, 300);
         clicked_item.addClass("active");
@@ -147,7 +147,7 @@ var news_carousel = function() {
       return false;
     });
   }();
-{% endhighlight %}
+</pre>
 
 <p>And that's it! Around 100 lines of code and you have your own home-made news carousel. Hope you found it useful! :)</p>
 
