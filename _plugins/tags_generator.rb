@@ -40,7 +40,7 @@ module Jekyll
     end
 
     def tags_list(tags)
-      tags.map { |t| tag_link(t) }.join(', ')
+      tags.map { |t| tag_link(t) }.join(' ')
     end
 
     def tag_cloud(site)
