@@ -193,14 +193,14 @@ pre.prettyprint {
 
 /* adaptive design */
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 1000px) {
   .onecol {
-    width: 470px;
-    font-size: 11px;
+    width: 100%;
+    font-size: 90%;
   }
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 1000px) {
   .onecol {
     width: 50%;
     font-size: 90%;
