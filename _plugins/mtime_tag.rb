@@ -11,7 +11,11 @@ module Jekyll
       item = context.scopes.first[@item]
       file = File.join(item.site.source, item.name)
 
-      File.mtime(file).xmlschema if File.exists?(file)
+      if File.exists?(file)
+        File.mtime(file).xmlschema
+      else
+        Time.now.xmlschema
+      end
     end
   end
 end

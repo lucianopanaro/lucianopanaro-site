@@ -16,7 +16,6 @@
 body {
   color: #555;
   font-family: serif;
-  font-size: 15px;
   line-height: 1.6em;
 }
 
@@ -42,7 +41,6 @@ hr.separator {
 
 .onecol {
   margin: auto;
-  width: 500px;
 }
 
 /* header and footer */
@@ -153,8 +151,6 @@ pre.prettyprint {
   background: #F0F3F3;
   border-bottom: 1px solid #ddd;
   border-top: 1px solid #ddd;
-  font-size: 0.8em;
-  width: 500px;
 }
 
 /* footer */
@@ -194,3 +190,20 @@ pre.prettyprint {
   border-top: 1px dotted #999;
   margin-bottom: 30px;
 }
+
+/* adaptive design */
+
+@media screen and (max-width: 500px) {
+  .onecol {
+    width: 470px;
+    font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .onecol {
+    width: 50%;
+    font-size: 90%;
+  }
+}
+
